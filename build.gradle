@@ -16,7 +16,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	compileOnly 'org.immutables:value:2.8.2'
-	annotationProcessor()
+	implementation 'org.immutables:value:2.8.2'
+	annotationProcessor 'org.immutables:value:2.8.2'
 }
 
 test {
