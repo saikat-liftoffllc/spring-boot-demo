@@ -1,8 +1,8 @@
 plugins {
-	id 'org.springframework.boot' version '2.5.2'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
-	id 'nu.studer.jooq' version '5.2.1'
+    id 'org.springframework.boot' version '2.5.2'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'nu.studer.jooq' version '5.2.1'
 }
 
 group = 'com.example'
@@ -10,62 +10,65 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.jetbrains:annotations:20.1.0'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	compileOnly 'org.immutables:value:2.8.2'
-	implementation 'org.immutables:value:2.8.2'
-	annotationProcessor 'org.immutables:value:2.8.2'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.jetbrains:annotations:20.1.0'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    compileOnly 'org.immutables:value:2.8.2'
+    implementation 'org.immutables:value:2.8.2'
+    annotationProcessor 'org.immutables:value:2.8.2'
 
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-	jooqGenerator 'org.postgresql:postgresql:42.2.14'
+    jooqGenerator 'org.postgresql:postgresql:42.2.14'
+
+    implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 jooq {
-	version.set("3.14.11")
-	edition.set(nu.studer.gradle.jooq.JooqEdition.OSS)
+    version.set("3.14.11")
+    edition.set(nu.studer.gradle.jooq.JooqEdition.OSS)
 
-	configurations {
-		main {
-			generateSchemaSourceOnCompilation = true
+    configurations {
+        main {
+            generateSchemaSourceOnCompilation = true
 
-			generationTool {
-				logging = org.jooq.meta.jaxb.Logging.WARN
-				jdbc {
-					driver = 'org.postgresql.Driver'
-					url = 'jdbc:postgresql://localhost:5432/demo'
-					user = 'postgres'
-					password = 'testing'
-				}
-				generator {
-					name = 'org.jooq.codegen.DefaultGenerator'
-					database {
-						name = 'org.jooq.meta.postgres.PostgresDatabase'
-						inputSchema = 'public'
-					}
-					generate {
-						deprecated = false
-						records = true
-						immutablePojos = true
-						fluentSetters = true
-						daos = true
-					}
-					target {
-						packageName = 'com.example.demo'
-						clean = true
-					}
-					strategy.name = 'org.jooq.codegen.DefaultGeneratorStrategy'
-				}
-			}
-		}
-	}
+            generationTool {
+                logging = org.jooq.meta.jaxb.Logging.WARN
+                jdbc {
+                    driver = 'org.postgresql.Driver'
+                    url = 'jdbc:postgresql://localhost:5432/demo'
+                    user = 'postgres'
+                    password = 'testing'
+                }
+                generator {
+                    name = 'org.jooq.codegen.DefaultGenerator'
+                    database {
+                        name = 'org.jooq.meta.postgres.PostgresDatabase'
+                        inputSchema = 'public'
+                    }
+                    generate {
+                        deprecated = false
+                        records = true
+                        immutablePojos = true
+                        fluentSetters = true
+                        daos = true
+                    }
+                    target {
+                        packageName = 'com.example.demo'
+                        clean = true
+                    }
+                    strategy.name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+                }
+            }
+        }
+    }
 }

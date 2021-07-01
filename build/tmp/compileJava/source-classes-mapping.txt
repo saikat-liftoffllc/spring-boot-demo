@@ -1,12 +1,34 @@
+com/example/demo/tables/Users.java
+ com.example.demo.tables.Users
 com/example/demo/controllers/HelloController.java
  com.example.demo.controllers.HelloController
 com/example/demo/controllers/UserController.java
  com.example.demo.controllers.UserController
-com/example/demo/services/UserService.java
- com.example.demo.services.UserService
-com/example/demo/DemoApplication.java
- com.example.demo.DemoApplication
+com/example/demo/tables/records/UsersRecord.java
+ com.example.demo.tables.records.UsersRecord
+com/example/demo/entities/User.java
+ com.example.demo.entities.User
+com/example/demo/DefaultCatalog.java
+ com.example.demo.DefaultCatalog
 com/example/demo/controllers/requests/CreateUserRequest.java
  com.example.demo.controllers.requests.CreateUserRequest
+com/example/demo/Tables.java
+ com.example.demo.Tables
+com/example/demo/tables/daos/UsersDao.java
+ com.example.demo.tables.daos.UsersDao
+com/example/demo/Keys.java
+ com.example.demo.Keys
+com/example/demo/services/UserService.java
+ com.example.demo.services.UserService
+com/example/demo/tables/pojos/Users.java
+ com.example.demo.tables.pojos.Users
+com/example/demo/DemoApplication.java
+ com.example.demo.DemoApplication
+com/example/demo/Public.java
+ com.example.demo.Public
+com/example/demo/Sequences.java
+ com.example.demo.Sequences
 com/example/demo/controllers/responses/GetHelloResponse.java
  com.example.demo.controllers.responses.GetHelloResponse
+com/example/demo/entities/mappers/UserMapper.java
+ com.example.demo.entities.mappers.UserMapper
