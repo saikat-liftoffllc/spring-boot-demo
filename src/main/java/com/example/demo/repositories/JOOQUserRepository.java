@@ -2,19 +2,39 @@ package com.example.demo.repositories;
 
 import com.example.demo.controllers.requests.CreateUserRequest;
 import com.example.demo.entities.User;
+import com.example.demo.entities.mappers.UserMapper;
+import com.example.demo.tables.records.UsersRecord;
+import org.jooq.DSLContext;
+import org.jooq.exception.DataAccessException;
 import org.springframework.stereotype.Repository;
+
+import static com.example.demo.Tables.USERS;
 
 @Repository
 public class JOOQUserRepository implements UserRepository {
+    private final DSLContext jooq;
+
+    public JOOQUserRepository(DSLContext jooq) {
+        this.jooq = jooq;
+    }
+
     @Override
     public User create(CreateUserRequest createUserRequest) {
-        System.out.println("JOOQUserRepository::create()");
-        return null;
+        UsersRecord userRecord = jooq
+                .insertInto(USERS)
+                .set(USERS.NAME, createUserRequest.getName())
+                .set(USERS.EMAIL, createUserRequest.getEmail())
+                .returning()
+                .fetchOne();
+        return UserMapper.mapper.toUser(userRecord);
     }
 
     @Override
     public User findById(Integer userId) {
-        System.out.println("JOOQUserRepository::findById()");
-        return null;
+        UsersRecord record = jooq.selectFrom(USERS).where(USERS.ID.equal(userId)).fetchOne();
+        if (record.equals(null)) {
+            throw new DataAccessException("User record not found with id: " + userId);
+        }
+        return UserMapper.mapper.toUser(record);
     }
 }
