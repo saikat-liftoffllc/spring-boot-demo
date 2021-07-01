@@ -28,11 +28,11 @@ com/example/demo/Public.java
  com.example.demo.Public
 com/example/demo/Sequences.java
  com.example.demo.Sequences
-com/example/demo/repositories/UserRepository.java
- com.example.demo.repositories.UserRepository
-com/example/demo/services/UserService.java
- com.example.demo.services.UserService
-com/example/demo/repositories/IUserRepository.java
- com.example.demo.repositories.IUserRepository
 com/example/demo/controllers/UserController.java
  com.example.demo.controllers.UserController
+com/example/demo/services/UserService.java
+ com.example.demo.services.UserService
+com/example/demo/repositories/JOOQUserRepository.java
+ com.example.demo.repositories.JOOQUserRepository
+com/example/demo/repositories/UserRepository.java
+ com.example.demo.repositories.UserRepository
