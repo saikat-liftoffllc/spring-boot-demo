@@ -6,12 +6,15 @@ import com.example.demo.entities.mappers.UserMapper;
 import com.example.demo.tables.records.UsersRecord;
 import org.jooq.DSLContext;
 import org.jooq.exception.DataAccessException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import static com.example.demo.Tables.USERS;
 
 @Repository
 public class JOOQUserRepository implements UserRepository {
+    private final Logger logger = LoggerFactory.getLogger(JOOQUserRepository.class);
     private final DSLContext jooq;
 
     public JOOQUserRepository(DSLContext jooq) {
@@ -20,6 +23,7 @@ public class JOOQUserRepository implements UserRepository {
 
     @Override
     public User create(CreateUserRequest createUserRequest) {
+        logger.info("Creating user" + createUserRequest);
         UsersRecord userRecord = jooq
                 .insertInto(USERS)
                 .set(USERS.NAME, createUserRequest.getName())
