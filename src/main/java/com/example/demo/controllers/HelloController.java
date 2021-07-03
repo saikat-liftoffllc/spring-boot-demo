@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
@@ -29,48 +30,14 @@ public class HelloController {
         return response;
     }
 
-    @GetMapping("/thread-details")
-    public Object getTheredDetails() {
-        Long threadId = Thread.currentThread().getId();
-        String threadName = Thread.currentThread().getName();
-        Map<String, String> map = new HashMap<>();
-        map.put("threadId", threadId.toString());
-        map.put("threadName", threadName);
-        return map;
-    }
-
     @GetMapping("simple-flux")
-    public List<Integer> simpleFlux() throws Exception{
-        List<Integer> elements = new ArrayList<>();
-        Flux.just(1, 2, 3, 4)
-                .log()
+    public String simpleFlux() throws Exception{
+        Flux.just(1, 2, 3)
                 .subscribeOn(Schedulers.parallel())
-                .doOnNext(n->{
-                    try {
-                        elements.add(n);
-                        Thread.sleep(1000);
-                    } catch(Exception e){}
-                })
-                .delayElements(Duration.ofSeconds(1))
-                .blockLast();
-//                .subscribe(elements::add);
-        logCurrentTheredInfo();
-        System.out.println("List: " + elements);
-        return elements;
-    }
-
-    private void logCurrentTheredInfo() {
-        Map<String, String> info = getCurrentThreadInfo();
-        System.out.println(info);
-    }
-
-
-    private Map<String, String> getCurrentThreadInfo() {
-        Long threadId = Thread.currentThread().getId();
-        String threadName = Thread.currentThread().getName();
-        Map<String, String> map = new HashMap<>();
-        map.put("threadId", threadId.toString());
-        map.put("threadName", threadName);
-        return map;
+                .log()
+                .flatMap(n -> Flux.just(n * 2))
+                .log()
+                .subscribe(n->System.out.println(n));
+        return "Done!!";
     }
 }
