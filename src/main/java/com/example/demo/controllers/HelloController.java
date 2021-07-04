@@ -10,6 +10,12 @@ import reactor.core.scheduler.Schedulers;
 
 @RestController
 public class HelloController {
+    @GetMapping("/controller-info")
+    public String getControllerInfo() {
+        // This is to just check if HelloController gets instantiated only once.
+        return this.toString();
+    }
+
     @GetMapping("/hello")
     public String getHello() {
         return "Hello World";
