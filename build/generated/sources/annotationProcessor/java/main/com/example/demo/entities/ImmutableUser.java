@@ -1,8 +1,13 @@
 package com.example.demo.entities;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.NotThreadSafe;
 import org.immutables.value.Generated;
 
 /**
@@ -13,7 +18,10 @@ import org.immutables.value.Generated;
  */
 @Generated(from = "User", generator = "Immutables")
 @SuppressWarnings({"all"})
+@SuppressFBWarnings
+@ParametersAreNonnullByDefault
 @javax.annotation.processing.Generated("org.immutables.processor.ProxyProcessor")
+@Immutable
 public final class ImmutableUser implements User {
   private final Integer id;
   private final String name;
@@ -90,7 +98,7 @@ public final class ImmutableUser implements User {
    * @return {@code true} if {@code this} is equal to {@code another} instance
    */
   @Override
-  public boolean equals(Object another) {
+  public boolean equals(@Nullable Object another) {
     if (this == another) return true;
     return another instanceof ImmutableUser
         && equalTo((ImmutableUser) another);
@@ -121,11 +129,12 @@ public final class ImmutableUser implements User {
    */
   @Override
   public String toString() {
-    return "User{"
-        + "id=" + id
-        + ", name=" + name
-        + ", email=" + email
-        + "}";
+    return com.google.common.base.Objects.toStringHelper("User")
+        .omitNullValues()
+        .add("id", id)
+        .add("name", name)
+        .add("email", email)
+        .toString();
   }
 
   /**
@@ -167,15 +176,16 @@ public final class ImmutableUser implements User {
    * but instead used immediately to create instances.</em>
    */
   @Generated(from = "User", generator = "Immutables")
+  @NotThreadSafe
   public static final class Builder {
     private static final long INIT_BIT_ID = 0x1L;
     private static final long INIT_BIT_NAME = 0x2L;
     private static final long INIT_BIT_EMAIL = 0x4L;
     private long initBits = 0x7L;
 
-    private Integer id;
-    private String name;
-    private String email;
+    private @Nullable Integer id;
+    private @Nullable String name;
+    private @Nullable String email;
 
     private Builder() {
     }

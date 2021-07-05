@@ -1,8 +1,13 @@
 package com.example.demo.controllers.responses;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.NotThreadSafe;
 import org.immutables.value.Generated;
 
 /**
@@ -13,7 +18,10 @@ import org.immutables.value.Generated;
  */
 @Generated(from = "GetHelloResponse", generator = "Immutables")
 @SuppressWarnings({"all"})
+@SuppressFBWarnings
+@ParametersAreNonnullByDefault
 @javax.annotation.processing.Generated("org.immutables.processor.ProxyProcessor")
+@Immutable
 public final class ImmutableGetHelloResponse
     implements GetHelloResponse {
   private final String message;
@@ -47,7 +55,7 @@ public final class ImmutableGetHelloResponse
    * @return {@code true} if {@code this} is equal to {@code another} instance
    */
   @Override
-  public boolean equals(Object another) {
+  public boolean equals(@Nullable Object another) {
     if (this == another) return true;
     return another instanceof ImmutableGetHelloResponse
         && equalTo((ImmutableGetHelloResponse) another);
@@ -74,9 +82,10 @@ public final class ImmutableGetHelloResponse
    */
   @Override
   public String toString() {
-    return "GetHelloResponse{"
-        + "message=" + message
-        + "}";
+    return com.google.common.base.Objects.toStringHelper("GetHelloResponse")
+        .omitNullValues()
+        .add("message", message)
+        .toString();
   }
 
   /**
@@ -116,11 +125,12 @@ public final class ImmutableGetHelloResponse
    * but instead used immediately to create instances.</em>
    */
   @Generated(from = "GetHelloResponse", generator = "Immutables")
+  @NotThreadSafe
   public static final class Builder {
     private static final long INIT_BIT_MESSAGE = 0x1L;
     private long initBits = 0x1L;
 
-    private String message;
+    private @Nullable String message;
 
     private Builder() {
     }
