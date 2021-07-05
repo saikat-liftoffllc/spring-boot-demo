@@ -5,8 +5,11 @@ import com.example.demo.controllers.responses.ImmutableGetHelloResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+
+import java.time.Duration;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 public class HelloController {
@@ -30,13 +33,31 @@ public class HelloController {
     }
 
     @GetMapping("simple-flux")
-    public String simpleFlux() throws Exception{
-        Flux.just(1, 2, 3)
-                .subscribeOn(Schedulers.parallel())
+    public Integer simpleFlux() throws Exception {
+        System.out.println("simpleFlux:thread:" + Thread.currentThread().getName());
+        Integer result = Mono.just(1)
+                .subscribeOn(Schedulers.boundedElastic())
                 .log()
-                .flatMap(n -> Flux.just(n * 2))
-                .log()
-                .subscribe(n->System.out.println(n));
-        return "Done!!";
+                .delayElement(Duration.ofSeconds(30))
+                .block();
+        return result;
     }
+
+    @GetMapping("completable-future")
+    public void completableFutureTest() {
+        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(1000 * 60);
+            } catch (InterruptedException e) {
+                throw new IllegalStateException(e);
+            }
+            return "Result of the asynchronous computation";
+        });
+        System.out.println("completableFutureTest:thread:" + Thread.currentThread().getName());
+        future.thenApply(result -> {
+            System.out.println("completableFutureTest:thenApply:thread:" + Thread.currentThread().getName());
+            return result;
+        });
+    }
+
 }
