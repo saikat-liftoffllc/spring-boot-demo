@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -101,15 +102,29 @@ public class HelloController {
         return filteredResult;
     }
 
-//    @GetMapping("/mono-fromcallable-test")
-//    public String monoFromCallableTest() {
-//        String response = Mono.fromCallable(()->{
-//            System.out.println("Mono:fromCallable:thread: " + Thread.currentThread().getName());
-//            Thread.sleep(1000);
-//            return "Response from fromCallable";
-//        }).subscribeOn(Schedulers.boundedElastic());
-//
-//        return response;
-//    }
+    @GetMapping("/webClient-test")
+    public String webClientTest() {
+        System.out.println("Before webClientThread: " + Thread.currentThread().getName());
+        WebClient.builder().build().get().uri("https://jsonplaceholder.typicode.com/todos/1")
+                .retrieve()
+                .bodyToMono(String.class)
+                .doOnNext(data->{
+                    System.out.println("1 Inside webClientThread: " + Thread.currentThread().getName());
+                    System.out.println(data);
+                })
+                .subscribe();
+
+        WebClient.builder().build().get().uri("https://jsonplaceholder.typicode.com/todos/1")
+                .retrieve()
+                .bodyToMono(String.class)
+                .doOnNext(data->{
+                    System.out.println("2 Inside webClientThread: " + Thread.currentThread().getName());
+                    System.out.println(data);
+                })
+                .subscribe();
+
+        System.out.println("After webClientThread: " + Thread.currentThread().getName());
+        return "Done!!";
+    }
 
 }
