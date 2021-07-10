@@ -3,7 +3,6 @@ package com.example.demo.controllers;
 import com.deliveredtechnologies.rulebook.Fact;
 import com.deliveredtechnologies.rulebook.FactMap;
 import com.deliveredtechnologies.rulebook.NameValueReferableMap;
-import com.deliveredtechnologies.rulebook.Result;
 import com.deliveredtechnologies.rulebook.model.RuleBook;
 import com.example.demo.controllers.responses.GetHelloResponse;
 import com.example.demo.controllers.responses.ImmutableGetHelloResponse;
@@ -11,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -45,14 +44,25 @@ public class HelloController {
     }
 
     @GetMapping("simple-flux")
-    public Integer simpleFlux() throws Exception {
+    public List<Integer> simpleFlux() throws Exception {
         System.out.println("simpleFlux:thread:" + Thread.currentThread().getName());
-        Integer result = Mono.just(1)
-                .subscribeOn(Schedulers.boundedElastic())
-                .log()
-                .delayElement(Duration.ofSeconds(30))
+        List<Integer> integers = List.of(1, 2);
+        return Flux.fromIterable(integers)
+                .parallel()
+                .runOn(Schedulers.boundedElastic())
+                .flatMap(n-> {
+                    System.out.println("simpleFlux:doOnNext1:thread:" + Thread.currentThread().getName() + ": i = " + n);
+                    return Mono.just(n * 2);
+                })
+                .sequential()
+                .parallel()
+                .runOn(Schedulers.parallel())
+                .doOnNext(n -> {
+                    System.out.println("simpleFlux:doOnNext2:thread:" + Thread.currentThread().getName() + ": i = " + n);
+                })
+                .sequential()
+                .collectList()
                 .block();
-        return result;
     }
 
     @GetMapping("completable-future")
@@ -90,5 +100,16 @@ public class HelloController {
                 : new ArrayList<String>();
         return filteredResult;
     }
+
+//    @GetMapping("/mono-fromcallable-test")
+//    public String monoFromCallableTest() {
+//        String response = Mono.fromCallable(()->{
+//            System.out.println("Mono:fromCallable:thread: " + Thread.currentThread().getName());
+//            Thread.sleep(1000);
+//            return "Response from fromCallable";
+//        }).subscribeOn(Schedulers.boundedElastic());
+//
+//        return response;
+//    }
 
 }

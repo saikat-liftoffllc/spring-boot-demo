@@ -8,7 +8,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-07-06T00:12:14+0530",
+    date = "2021-07-07T01:04:54+0530",
     comments = "version: 1.4.2.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-7.0.2.jar, environment: Java 11.0.11 (Amazon.com Inc.)"
 )
 public class UserMapperImpl implements UserMapper {
