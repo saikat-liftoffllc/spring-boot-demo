@@ -22,6 +22,8 @@ com/example/demo/tables/daos/UsersDao.java
  com.example.demo.tables.daos.UsersDao
 com/example/demo/Keys.java
  com.example.demo.Keys
+com/example/demo/controllers/RedisController.java
+ com.example.demo.controllers.RedisController
 com/example/demo/rules/RuleB.java
  com.example.demo.rules.RuleB
 com/example/demo/services/UserService.java
